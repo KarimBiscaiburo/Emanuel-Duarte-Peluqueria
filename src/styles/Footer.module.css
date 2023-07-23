@@ -1,0 +1,52 @@
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 3fr;
+    place-items: start center;
+    background-color: var(--negro);
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.consultas { 
+    font-size: 20px; 
+    color: var(--blanco);
+}
+.iconos {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    gap: 8px;
+}
+.icono {
+    display: flex;
+    align-items: center;
+}
+.celular { 
+    color: var(--dorado); 
+    padding-left: 10px;
+}
+.instagram {
+    color: var(--dorado);
+    text-decoration: none;
+    padding-left: 10px;
+}
+.nombre {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-end;
+  }
+.nombreTexto {
+    color: var(--blanco);
+    font-size: 14px;
+}
+
+@media (max-width: 650px ) { 
+    .consultas { font-size: 16px; }
+    .nombreTexto { font-size: 12px; }
+    .icono { transform: scale(.8); }
+}

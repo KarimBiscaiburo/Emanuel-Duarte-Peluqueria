@@ -1,0 +1,28 @@
+.principal { gap: 15px; }
+.iniciarSesion {
+    border: 1px solid var(--blanco);
+    border-radius: 10px;
+    max-width: 500px;
+    gap: 10px;
+    padding: 15px;
+}
+.inputBox {
+    position: relative;
+    width: 100%;
+}
+.formulario { gap: 10px; }
+.registrarse { color: var(--celeste-claro); }
+.recuperar { color: var(--celeste); }
+.mostrarPassword {
+    position: absolute;
+    cursor: pointer;
+    top: 8.5px;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    transition: all .3s;
+    background-image: url(../img/no_visible.svg);
+}
+.mostrarPassword.passwordVisible {
+    background-image: url(../img/visible.svg);
+}

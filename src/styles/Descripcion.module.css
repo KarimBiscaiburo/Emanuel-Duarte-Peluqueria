@@ -1,0 +1,14 @@
+.descTexto {
+    display: block;
+    color: var(--blanco);
+    width: 60%;
+    height: 200px;
+    padding: 21px;
+    font-size: 15px;
+    border: 1px solid var(--blanco);
+    border-radius: 10px;
+    letter-spacing: 1px;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}

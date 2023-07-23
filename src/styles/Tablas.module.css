@@ -1,0 +1,85 @@
+.tableContainer {
+    width: 100%;
+    padding: 15px;
+}
+.table {
+    margin: 40px 0;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 0px 5px 1px #252525;
+}
+.tableBody {
+    text-align: center;
+}
+.tableBody td {
+    background-color: var(--transparente-gris-claro);
+    color: var(--blanco);
+}
+.tableHead {
+    background-color: var(--negro-claro);
+}
+.tableHead th {
+    color: var(--dorado-opaco);
+}
+.tableBody td,
+.tableHead th {
+    padding: 15px;
+}
+
+@media (max-width: 900px) {
+    .tableContainer {
+        overflow-x: scroll;
+    }   
+}
+@media (max-width: 1130px) {
+    .computadora {
+        overflow-x: scroll;
+    }
+}
+.accion {
+    color: var(--blanco);
+    padding: 5px;
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    transition: .5s all;
+    margin-top: 5px;
+}
+.accionSecPend {
+    max-width: 150px;
+}
+.reprogramar { background-color: var(--celeste); }
+.reprogramar:hover { background-color: var(--celeste-claro); }
+.accionBtn {
+    color: var(--blanco);
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: .5s all;
+}
+.accionBtn:nth-child(2) { margin-top: 10px; }
+.cancelar { 
+    background-color: var(--rojo); 
+    margin-top: 10px;
+}
+.cancelar:hover { background-color: var(--rojo-claro); }
+.aceptar { background-color: var(--verde); }
+.aceptar:hover { background-color: var(--verde-claro); }
+.rechazar { background-color: var(--rojo); }
+.rechazar:hover { background-color: var(--rojo-claro); }
+
+.estado {
+    padding: 5px;
+    border-radius: 10px;
+    color: var(--blanco);
+    margin-top: 5px;
+}
+.confirmado { background-color: var(--verde); }
+.cancelado { background-color: var(--rojo); }
+.pendiente { background-color: var(--celeste); }
+.finalizado { background-color: var(--dorado); }

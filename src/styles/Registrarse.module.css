@@ -1,0 +1,43 @@
+.formulario { 
+    gap: 10px; 
+    border-radius: 10px;
+    border: 1px solid var(--blanco);
+    max-width: 600px;
+    padding: 15px;
+    margin: 25px 0;
+}
+.inputBox {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    max-width: 500px;
+}
+.inputBox span {
+    position: absolute;
+    left: 0;
+    padding: 15px;
+    color: var(--negro);
+    pointer-events: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 1px;
+    font-size: 15px;
+    transform: translateX(20px) translateY(-7px);
+    padding: 0 5px;
+    background-color: var(--dorado);
+    border-radius: 3px;
+}
+.mostrarPassword {
+    position: absolute;
+    cursor: pointer;
+    top: 8.5px;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    transition: all .3s;
+    background-image: url(../img/no_visible.svg);
+}
+.passwordVisible {
+    background-image: url(../img/visible.svg);
+}

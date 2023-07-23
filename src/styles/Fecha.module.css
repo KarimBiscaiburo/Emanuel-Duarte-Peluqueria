@@ -1,0 +1,122 @@
+.section {
+    margin-top: 25px;
+    width: 100%;
+}
+.contenedorFechas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 15px;
+}
+.contenedorFechas button {
+    font-size: 16px;
+}
+.textoFecha {
+    background-color: transparent;
+    color: var(--blanco);
+    padding: 12px;
+    border: 1px solid var(--blanco);
+    box-shadow: 0 0 5px 1px #413f3f;
+    border-radius: 15px;
+    transition: .5s all;
+    user-select: none;
+}
+.textoFecha:hover {
+    cursor: pointer;
+    background-color: var(--transparente-gris-claro);
+}
+.contenedorHorarios {
+    width: 100%;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+.horarios {
+    padding: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+.horario {
+    padding: 10px;
+    height: 50px;
+    align-items: center;
+    transition: .3s all;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    margin-bottom: 5px;
+}
+.horario p {
+    color: var(--blanco);
+}
+.horaDiv {
+    display: flex;
+    justify-content: space-between;
+}
+.horaDiv p {
+    align-self: center;
+}
+.horaDiv div {
+    align-items: center;
+    display: flex;
+    gap: 1px;
+    height: 30px;
+    cursor: pointer;
+}
+.horaDiv div span {
+    display: block;
+    height: 4px;
+    width: 20px;
+    border-radius: 15px;
+    background-color: var(--dorado-opaco);
+    transition: .3s all;
+}
+.horaDiv div span:nth-child(1){
+    transform: rotate(40deg) translateX(5px);
+}
+.horaDiv div span:nth-child(2){
+    transform: rotate(-40deg) translateX(-5px);
+    
+}
+.horarioActivo .horaDiv div span:nth-child(1) {
+    transform: rotate(-40deg) translateX(5px);
+}
+.horarioActivo .horaDiv div span:nth-child(2) {
+    transform: rotate(40deg) translateX(-5px);
+}
+.horaDetalle {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: .3s all;
+    transform: translateY(-10px) scale(0);
+}
+.detalleTurno {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.detalleTurno button {
+    background-color: transparent;
+    border: 1px solid var(--blanco);
+    cursor: pointer;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    transition: .2s all;
+}
+.horarioActivo {
+    height: 150px;
+}
+.horarioActivo .horaDetalle{
+    transform: translateY(0) scale(1);
+}
+.solicitado p {
+    color: var(--transparente-gris-claro);
+}
+.solicitado button {
+    border: 1px solid var(--transparente-gris-claro);
+    cursor: not-allowed;
+}

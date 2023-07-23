@@ -1,0 +1,22 @@
+.formulario {
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.parrafo { color: var(--blanco); }
+.formDetalles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+@media (max-width: 768px ) {
+    .formDetalles {
+        display: flex;
+        flex-direction: column;
+        align-items: normal;
+        gap: 0;
+    }
+}

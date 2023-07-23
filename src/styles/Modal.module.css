@@ -1,0 +1,51 @@
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--transparente-gris);
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+}
+.modalActivo {
+    opacity: 1;
+    visibility: visible;
+}
+.modalContainer {
+    margin: auto;
+    max-width: 500px;
+    max-height: 90%;
+    width: 90%;
+    background-color: var(--gris-oscuro);
+    border-radius: 6px;
+    padding: 20px 15px;
+    display: grid;
+    gap: 15px; 
+    place-items: center;
+    grid-auto-columns: 100%;
+}
+.modalContainer label {
+    font-size: 22px;
+    color: var(--blanco);
+}
+.modalContainer textarea {
+    width: 100%;
+    height: 150px;
+    background-color: var(--blanco);
+    resize: none;
+    outline: none;
+    padding: 15px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    border-radius: 10px;
+}
+.modalContainer input[type="date"] {
+    padding: 5px 15px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+
