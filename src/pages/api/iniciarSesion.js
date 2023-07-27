@@ -23,7 +23,7 @@ function comprobarPassword(passwordHash, passwordText) {
     return bcrypt.compare(passwordText, passwordHash);
 }
 
-const iniciarSesion = async  (req, res) => {
+const iniciarSesion = (req, res) => {
     const { email, passwordText } = req.body;
 
     verificarCorreo(email)

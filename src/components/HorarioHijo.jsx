@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import style from "../styles/Fecha.module.css";
 
-export default function Layout({key, isActive, onClick, hora, turnosSolicitados }) {
+export default function Layout({ isActive, onClick, hora, turnosSolicitados }) {
   const changeHora = useStore( (state) => state.changeHora);
   const  claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
 
@@ -18,13 +18,13 @@ export default function Layout({key, isActive, onClick, hora, turnosSolicitados 
 
   function guardarHorario(e, hora) {
     changeHora(hora)
-    e.target.classList.toggle("reservado")
-    console.log(e.target)
+    e.target.classList.toggle("reservado");
+
   }
   
   return (
     <>
-      <div key={key} className={claseHijo} >
+      <div className={claseHijo} >
 
         <div className={style.horaDiv}>
           <p>{`${hora}:00 HRS`}</p>
@@ -45,7 +45,7 @@ export default function Layout({key, isActive, onClick, hora, turnosSolicitados 
               : 
               <div className={style.detalleTurno}>
                 <p>{`${hora}:00 HRS`}</p> 
-                <button onClick={(e) => guardarHorario(e ,`${hora}:00 HRS`)}></button>
+                <button onClick={(e) => guardarHorario(e ,`${hora}:00`)}></button>
               </div>
           }
 
@@ -58,7 +58,7 @@ export default function Layout({key, isActive, onClick, hora, turnosSolicitados 
               : 
               <div className={style.detalleTurno}>
                 <p>{`${hora}:30 HRS`}</p> 
-                <button onClick={(e) => guardarHorario(e, `${hora}:30 HRS`)}></button>
+                <button onClick={(e) => guardarHorario(e, `${hora}:30`)}></button>
               </div>
           }
         </div>
