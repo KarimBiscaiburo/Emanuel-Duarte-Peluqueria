@@ -24,7 +24,12 @@
 }
 .textoFecha:hover {
     cursor: pointer;
-    background-color: var(--transparente-gris-claro);
+}
+.modalError {
+    color: var(--blanco);
+    background-color: var(--rojo);
+    padding: 10px 15px;
+    border-radius: 15px;
 }
 .contenedorHorarios {
     width: 100%;
@@ -107,6 +112,9 @@
     width: 30px;
     transition: .2s all;
 }
+.fechaActivo {
+    background-color: var(--verde);
+}
 .horarioActivo {
     height: 150px;
 }
@@ -119,4 +127,12 @@
 .solicitado button {
     border: 1px solid var(--transparente-gris-claro);
     cursor: not-allowed;
+}
+.textoDatosFaltantes {
+    color: var(--blanco);
+    background-color: var(--rojo);
+    padding: 10px 15px;
+    text-align: center;
+    margin: 5px 0;
+    border-radius: 15px;
 }

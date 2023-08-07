@@ -104,6 +104,6 @@ h4 {
     border: 1px solid var(--verde-claro);
 }
 div button.reservado {
-    background-color: red;
-    border: 1px solid red;
+    background-color: var(--verde);
+    border: 1px solid var(--verde);
 }

@@ -1,13 +1,28 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useStore from "@/store/store";
 
 import style from "../../styles/Tablas.module.css";
 import modal from "../../styles/Modal.module.css";
 import boton from "../../styles/Botones.module.css";
 
 export default function Historial() {
-
+    const idUsuario = useStore( (state) => state.idUsuario);
     const [modalActivo, setModalActivo] = useState(false);
+    const [historialTurnos, setHistorialTurnos] = useState([]);
+
+    useEffect(() => {
+        fetch("http://localhost:3000/api/obtenerTurnosUsuario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: idUsuario,
+        })
+        .then( res => res.json() )
+        .then( data => setHistorialTurnos(data) )
+    
+    }, [idUsuario, setHistorialTurnos]);
 
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`
 
@@ -31,7 +46,6 @@ export default function Historial() {
                     <h1>Historial</h1>
 
                     <div className={style.tableContainer}>
-
                         <table className={style.table}>
                             <thead className={style.tableHead}>
                                 <tr>
@@ -46,62 +60,32 @@ export default function Historial() {
                             </thead>
                         
                             <tbody className={style.tableBody}>
-                                <tr>
-                                    <td>Martin Perez</td>
-                                    <td>8/6</td>
-                                    <td>15:30</td>
-                                    <td>Guemes 3027</td>
-                                    <td>Octavo A</td>
-                                    <td>
-                                        <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                        <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
-                                    </td>
-                                    <td>
-                                    <p className={`${style.estado} ${style.pendiente}`}>Pendiente</p>
-                                    </td>
-                                </tr> 
-                                <tr>
-                                    <td>Martin Perez</td>
-                                    <td>8/6</td>
-                                    <td>15:30</td>
-                                    <td>Guemes 3027</td>
-                                    <td>Octavo A</td>
-                                    <td>
-                                        <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                        <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
-                                    </td>
-                                    <td>
-                                    <p className={`${style.estado} ${style.confirmado}`}>Confirmado</p>
-                                    </td>
-                                </tr> 
-                                <tr>
-                                    <td>Martin Perez</td>
-                                    <td>8/6</td>
-                                    <td>15:30</td>
-                                    <td>Guemes 3027</td>
-                                    <td>Octavo A</td>
-                                    <td>
-                                        <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                        <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
-                                    </td>
-                                    <td>
-                                    <p className={`${style.estado} ${style.cancelado}`}>Cancelado</p>
-                                    </td>
-                                </tr> 
-                                <tr>
-                                    <td>Martin Perez</td>
-                                    <td>8/6</td>
-                                    <td>15:30</td>
-                                    <td>Guemes 3027</td>
-                                    <td>Octavo A</td>
-                                    <td>
-                                        <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                        <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
-                                    </td>
-                                    <td>
-                                    <p className={`${style.estado} ${style.finalizado}`}>Finalizado</p>
-                                    </td>
-                                </tr> 
+                                {
+                                    historialTurnos.map((turno) => {
+                                        const fecha = new Date(turno.fecha);
+                                        const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}`;
+
+                                        const hora = turno.hora.split(":");
+                                        const horaFormateada = `${hora[0]}:${hora[1]}`;
+
+                                        const claseEstado = turno.estado.toUpperCase() === "Pendiente".toUpperCase() ? `${style.estado} ${style.pendiente}` : turno.estado.toUpperCase() === "Confirmado".toUpperCase() ? `${style.estado} ${style.confirmado}` : turno.estado.toUpperCase() === "Cancelado".toUpperCase() ? `${style.estado} ${style.cancelado}` : `${style.estado} ${style.finalizado}`;
+
+                                        return <tr key={turno.idturnos}>
+                                            <td>{`${turno.nombre} ${turno.apellido}`}</td>
+                                            <td>{fechaFormateada}</td>
+                                            <td>{horaFormateada}</td>
+                                            <td>{turno.direccion}</td>
+                                            <td>{turno.piso}</td>
+                                            <td>
+                                                <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
+                                                <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
+                                            </td>
+                                            <td>
+                                                <p className={claseEstado}>{turno.estado}</p>
+                                            </td>
+                                        </tr>
+                                    })
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -119,7 +103,6 @@ export default function Historial() {
                 </section>
             </div>
         </>
-
-        
     )
 }
+

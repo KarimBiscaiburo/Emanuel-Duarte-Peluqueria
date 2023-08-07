@@ -2,7 +2,7 @@ import { pool } from "@/db/db";
 
 const guardarTurno = async (req, res) => {
     const {usuarios_idusuarios, fecha, hora, descripcion, nombre, apellido, celular, direccion, piso, servicio} = req.body
-    const estado = "pendiente";
+    const estado = "Pendiente";
 
     try {
         const [result] = await pool.query("INSERT INTO turnos SET ?", {usuarios_idusuarios, fecha, hora, descripcion, estado, nombre, apellido, celular, direccion, piso, servicio});

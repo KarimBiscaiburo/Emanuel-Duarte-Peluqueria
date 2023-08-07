@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "../../styles/Tablas.module.css";
 import modal from "../../styles/Modal.module.css";
 import boton from "../../styles/Botones.module.css";
 
-export default function Pendientes() {
+export default function Pendientes({ data }) {
     const [modalActivo, setModalActivo] = useState(false);
+    const [turnosPendiente, setTurnosPendientes] = useState([]);
 
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`;
+
+    useEffect(() => {
+        setTurnosPendientes(data);
+    }, [setTurnosPendientes, data])
 
     function abrirModal() {
         setModalActivo(true);
@@ -19,6 +24,22 @@ export default function Pendientes() {
     function cerrarModal(e) {
         e.preventDefault();
         setModalActivo(false);
+    }
+
+    async function cambiarEstado(id) {
+        const res = await fetch("http://localhost:3000/api/aceptarTurno", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: id
+        })
+
+        if(res.status === 200) {
+            fetch("http://localhost:3000/api/obtenerTurnosPendientes")
+                .then(res => res.json())
+                .then(data => setTurnosPendientes(data))
+        }
     }
 
     return (
@@ -41,40 +62,27 @@ export default function Pendientes() {
                         </thead>
                     
                         <tbody className={style.tableBody}>
-                            <tr>
-                                <td>Martin Perez</td>
-                                <td>8/6</td>
-                                <td>15:30</td>
-                                <td>Guemes 3027</td>
-                                <td>Octavo A</td>
-                                <td>
-                                    <button className={`${style.accionBtn} ${style.aceptar} ${style.accionSecPend}`}>Aceptar</button>
-                                    <button onClick={abrirModal} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
-                                </td>
-                            </tr> 
-                            <tr>
-                                <td>Martin Perez</td>
-                                <td>8/6</td>
-                                <td>15:30</td>
-                                <td>Guemes 3027</td>
-                                <td>Octavo A</td>
-                                <td>
-                                    <button className={`${style.accionBtn} ${style.aceptar} ${style.accionSecPend}`}>Aceptar</button>
-                                    <button onClick={abrirModal} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
-                                </td>
-                            </tr> 
-                            <tr>
-                                <td>Martin Perez</td>
-                                <td>8/6</td>
-                                <td>15:30</td>
-                                <td>Guemes 3027</td>
-                                <td>Octavo A</td>
-                                <td>
-                                    <button className={`${style.accionBtn} ${style.aceptar} ${style.accionSecPend}`}>Aceptar</button>
-                                    <button onClick={abrirModal} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
-                                </td>
-                            </tr> 
-                            
+                            {
+                                turnosPendiente.map((turno) => {
+                                    const fecha = new Date(turno.fecha);
+                                    const fechaFormateada = `${fecha.getDate()}/${fecha.getMonth() + 1}`;
+
+                                    const hora = turno.hora.split(":");
+                                    const horaFormateada = `${hora[0]}:${hora[1]}`;
+
+                                    return <tr key={turno.idturnos}>
+                                        <td>{`${turno.nombre} ${turno.apellido}`}</td>
+                                        <td>{fechaFormateada}</td>
+                                        <td>{horaFormateada}</td>
+                                        <td>{turno.direccion}</td>
+                                        <td>{turno.piso}</td>
+                                        <td>
+                                            <button onClick={()=> cambiarEstado(turno.idturnos)} className={`${style.accionBtn} ${style.aceptar} ${style.accionSecPend}`}>Aceptar</button>
+                                            <button onClick={abrirModal} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
+                                        </td>
+                                    </tr>
+                                })
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -92,4 +100,10 @@ export default function Pendientes() {
             </section>
         </>
     );
+}
+
+export async function getServerSideProps() {
+    const res = await fetch("http://localhost:3000/api/obtenerTurnosPendientes");
+    const data = await res.json();
+    return { props: { data } };
 }

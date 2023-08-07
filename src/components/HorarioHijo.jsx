@@ -3,8 +3,9 @@ import { useState } from "react";
 
 import style from "../styles/Fecha.module.css";
 
-export default function Layout({ isActive, onClick, hora, turnosSolicitados }) {
+export default function Layout({ isActive, onClick, hora, turnosSolicitados, isReservado, setIsReservado }) {
   const changeHora = useStore( (state) => state.changeHora);
+  const datoHora = useStore( (state) => state.hora);
   const  claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
 
   function revisarHorario(hora) {
@@ -17,9 +18,18 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados }) {
   }
 
   function guardarHorario(e, hora) {
-    changeHora(hora)
-    e.target.classList.toggle("reservado");
 
+    if(!isReservado) {
+      changeHora(hora);
+      e.target.classList.add("reservado");
+      setIsReservado(true);
+    } else {
+      if(datoHora === hora) {
+        changeHora(null);
+        e.target.classList.remove("reservado");
+        setIsReservado(false);
+      }
+    }
   }
   
   return (

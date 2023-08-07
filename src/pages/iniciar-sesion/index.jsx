@@ -132,7 +132,7 @@ export default function IniciarSesion () {
                     <Link href="/iniciar-sesion/registrarse" className={style.registrarse}>Registrarse</Link>
                 </div>
 
-                <Link href="/iniciar-sesion/recuperar" className={style.recuperar}>¿ Olvidaste tu contraseña ?</Link>
+                {/* <Link href="/iniciar-sesion/recuperar" className={style.recuperar}>¿ Olvidaste tu contraseña ?</Link> */}
 
                 <div className="contenedor alinear-izquierda">
                     <Link href="/" className={boton.rojo}>Volver</Link>
