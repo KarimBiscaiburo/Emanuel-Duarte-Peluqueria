@@ -12,7 +12,6 @@ import FechaHijo from "@/components/FechaHijo";
 
 export default function Fecha ({ data }) {
     const router = useRouter();
-    const store = useStore( (state) => state);
     const usuarios_idusuarios = useStore( (state) => state.idUsuario);
     const servicio = useStore( (state) => state.servicio);
     const descripcion = useStore( (state) => state.descripcion);
@@ -36,7 +35,6 @@ export default function Fecha ({ data }) {
     const claseCalendario = fechaActivo === 20 ? `${style.textoFecha} ${style.fechaActivo}` : style.textoFecha
     
     const { consultaReservas, consultaTurnos } = data;
-    console.log(store)
 
     useEffect( () => {
         const fechaActual = new Date();
@@ -153,7 +151,7 @@ export default function Fecha ({ data }) {
             mostrarDatosFaltantes(errores);
             return;
         }
-
+        //Se puede borrar el const?
         const res = await fetch("http://localhost:3000/api/guardarTurno", {
             method: "POST",
             headers: {
@@ -197,7 +195,7 @@ export default function Fecha ({ data }) {
     }
     function cambiarHorarios(fecha){
         const a = fecha.split("-");
-        const fechaNueva = `${a[0]}/${a[1]}/${a[2]}`;
+        const fechaNueva = `${a[0]}-${a[1]}-${a[2]}`;
         changeFecha(fechaNueva);
         actualizarHorarios(fechaNueva);
     }
@@ -230,7 +228,7 @@ export default function Fecha ({ data }) {
         const year = fecha.getUTCFullYear();
         const month = String(fecha.getUTCMonth() + 1).padStart(2, '0');
         const day = String(fecha.getUTCDate()).padStart(2, '0');
-        return `${year}/${month}/${day}`;
+        return `${year}-${month}-${day}`;
     }
     function convertirFecha(cadenaFecha) {
         return new Date(cadenaFecha);

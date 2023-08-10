@@ -1,12 +1,12 @@
 import useStore from "@/store/store";
-import { useState } from "react";
 
 import style from "../styles/Fecha.module.css";
 
-export default function Layout({ isActive, onClick, hora, turnosSolicitados, isReservado, setIsReservado }) {
+export default function Layout({ isActive, onClick, hora, turnosSolicitados, reservar = false, setModalReservaActivo = null }) {
   const changeHora = useStore( (state) => state.changeHora);
   const datoHora = useStore( (state) => state.hora);
-  const  claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
+  const datoFecha = useStore( (state) => state.fecha);
+  const claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
 
   function revisarHorario(hora) {
     for (let i = 0; i < turnosSolicitados.length; i++) {
@@ -16,20 +16,24 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados, isR
     }
     return false;
   }
-
-  function guardarHorario(e, hora) {
-
-    if(!isReservado) {
-      changeHora(hora);
-      e.target.classList.add("reservado");
-      setIsReservado(true);
-    } else {
-      if(datoHora === hora) {
-        changeHora(null);
-        e.target.classList.remove("reservado");
-        setIsReservado(false);
-      }
+  
+  function guardarHorario(hora) {
+    changeHora(hora);
+    //esto solo se ejecuta cuando admin va a reservar un usuario (evita que se ejecute en otras ventanas)
+    if (reservar) {
+      mostrarModalReserva(hora);
     }
+  }
+  function mostrarModalReserva(hora) {
+    setModalReservaActivo(true);
+    const pFecha = document.querySelector("#fechaModal");
+    const pHora = document.querySelector("#horaModal");
+
+    const fechaArreglo = datoFecha.split("-");
+    const fechaFormateada = `${fechaArreglo[2]}/${fechaArreglo[1]}/${fechaArreglo[0]}`;
+    
+    pFecha.textContent = fechaFormateada;
+    pHora.textContent = `${hora} HRS`;
   }
   
   return (
@@ -55,7 +59,7 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados, isR
               : 
               <div className={style.detalleTurno}>
                 <p>{`${hora}:00 HRS`}</p> 
-                <button onClick={(e) => guardarHorario(e ,`${hora}:00`)}></button>
+                <button onClick={() => guardarHorario(`${hora}:00`)}></button>
               </div>
           }
 
@@ -68,7 +72,7 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados, isR
               : 
               <div className={style.detalleTurno}>
                 <p>{`${hora}:30 HRS`}</p> 
-                <button onClick={(e) => guardarHorario(e, `${hora}:30`)}></button>
+                <button onClick={() => guardarHorario(`${hora}:30`)}></button>
               </div>
           }
         </div>

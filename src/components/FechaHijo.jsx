@@ -16,7 +16,7 @@ function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) 
         const anio = new Date().getFullYear();
         const fecha = e.target.textContent;
         const a = fecha.split("/");
-        const fechaNueva = `${anio}/${a[1]}/${a[0]}`;
+        const fechaNueva = `${anio}-${a[1]}-${a[0]}`;
         changeFecha(fechaNueva);
         actualizarHorarios(fechaNueva);
     }
@@ -28,6 +28,8 @@ function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) 
         for(let i = 0; consultaReservas[i]; i++) {
             const fechaFormateada = convertirFecha(consultaReservas[i].fecha)
             const nuevaFecha = formatearFecha(fechaFormateada);
+            console.log(nuevaFecha)
+            console.log(fecha)
             if(nuevaFecha == fecha) {
                 const arregloHoras = consultaReservas[i].hora.split(":", 2)
                 const stringHora = `${arregloHoras[0]}:${arregloHoras[1]}`;
@@ -37,6 +39,7 @@ function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) 
         for(let i = 0; consultaTurnos[i]; i++) {
             const fechaFormateada = convertirFecha(consultaTurnos[i].fecha)
             const nuevaFecha = formatearFecha(fechaFormateada);
+            
             if(nuevaFecha === fecha) {
                 const arregloHoras = consultaTurnos[i].hora.split(":", 2)
                 const stringHora = `${arregloHoras[0]}:${arregloHoras[1]}`;
@@ -49,7 +52,7 @@ function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) 
         const year = fecha.getUTCFullYear();
         const month = String(fecha.getUTCMonth() + 1);
         const day = String(fecha.getUTCDate());
-        return `${year}/${month}/${day}`;
+        return `${year}-${month}-${day}`;
     }
     function convertirFecha(cadenaFecha) {
         return new Date(cadenaFecha);
