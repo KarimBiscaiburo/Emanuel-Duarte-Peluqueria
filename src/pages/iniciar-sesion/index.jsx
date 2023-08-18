@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import useStore from "../../store/store.js";
 
 import style from "../../styles/Iniciar-sesion.module.css";
@@ -10,8 +11,6 @@ import boton from "../../styles/Botones.module.css";
 import alerta from "../../styles/Alertas.module.css";
 
 import { devolverErroresHtml, limpiarHtml, validarFormulario } from "@/funciones/validaciones";
-
-
 
 export default function IniciarSesion () {
     const router = useRouter();
@@ -52,6 +51,7 @@ export default function IniciarSesion () {
             return;
         }
 
+        //const autorizar = await signIn
         
 
         if(res === "admin") {

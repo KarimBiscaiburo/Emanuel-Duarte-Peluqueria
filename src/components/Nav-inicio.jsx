@@ -3,10 +3,16 @@ import Link from "next/link";
 import style from "../styles/Nav.module.css";
 
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function NavInicio() {
     const [activo, setActivo] = useState(false);
+    const router = useRouter();
     const handleActivo = () => setActivo(!activo);
+    function redirigir() {
+        setActivo(!activo);
+        router.push("/api/auth/signin");
+    }
     
     const claseHamburguesa = `${style.menuHamburguesa} ${activo ? style.activo : ""}`;
     const claseNav = `${style.nav} ${activo ? style.activo : ""}`;
@@ -24,7 +30,7 @@ export default function NavInicio() {
             <nav id="nav" className={claseNav}>
                 <ul className={style.navLista}>
                     <li className={style.navListaEnlaces}>
-                        <Link className={style.enlace} href="/iniciar-sesion" onClick={handleActivo}>Iniciar Sesión</Link>
+                        <button className={style.enlace} onClick={redirigir}>Iniciar Sesión</button>
                     </li>
                 </ul>
             </nav>

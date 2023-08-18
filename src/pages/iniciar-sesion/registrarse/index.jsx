@@ -10,6 +10,7 @@ import boton from "../../../styles/Botones.module.css";
 import alerta from "../../../styles/Alertas.module.css";
 
 import { devolverErroresHtml, limpiarHtml, validarFormulario } from "@/funciones/validaciones";
+import { signIn } from "next-auth/react";
 
 export default function Registrarse () {
     const router = useRouter();
@@ -36,7 +37,7 @@ export default function Registrarse () {
         const data = Object.fromEntries(
             new FormData(e.target)
         )
-        
+
         const res = await fetch("http://localhost:3000/api/registrarse" , {
             method: "POST",
             headers: {
@@ -49,13 +50,15 @@ export default function Registrarse () {
 
         if(res === "error") {
             mostrarResultadoError();
-        } else if(res === "admin") {
-            changeIsAuthenticated();
-            changeIsAdmin();
-            router.push("/");
         } else {
+            const resultadoSignIn = await signIn("credentials", {
+                email: data.email,
+                password: data.passwordText,
+                redirect: false
+            })
             changeIsAuthenticated();
-            router.push("/");
+            changeIdUsuario(res);
+            if(resultadoSignIn?.ok) return router.push("/");
         }
     }
 
