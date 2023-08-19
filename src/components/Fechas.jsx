@@ -1,5 +1,5 @@
 import HorarioHijo from "../components/HorarioHijo";
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 import { useState } from "react";
 
 import style from "../styles/Fecha.module.css";

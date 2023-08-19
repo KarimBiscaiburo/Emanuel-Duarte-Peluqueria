@@ -3,13 +3,13 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 import { useRouter } from "next/router";
 
 import style from "../../../styles/Quien.module.css";
 import input from "../../../styles/Inputs.module.css";
 import boton from "../../../styles/Botones.module.css";
-import { solicitarUsuario } from "@/funciones/obtenerDatos";
+import { solicitarUsuario } from "src/funciones/obtenerDatos";
 
 export default function Quien () {
     const router = useRouter();

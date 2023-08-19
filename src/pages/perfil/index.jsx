@@ -5,9 +5,9 @@ import input from "../../styles/Inputs.module.css";
 import boton from "../../styles/Botones.module.css";
 import alerta from "../../styles/Alertas.module.css";   
 
-import { solicitarUsuario } from "@/funciones/obtenerDatos";
-import { devolverErroresHtml, limpiarHtml, validarFormulario } from "@/funciones/validaciones";
-import useStore from "@/store/store";
+import { solicitarUsuario } from "src/funciones/obtenerDatos";
+import { devolverErroresHtml, limpiarHtml, validarFormulario } from "src/funciones/validaciones";
+import useStore from "src/store/store";
 
 export default function Perfil() {
     const {idUsuario} = useStore();

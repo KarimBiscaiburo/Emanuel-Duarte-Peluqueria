@@ -1,5 +1,5 @@
 import style from "../styles/Fecha.module.css";
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 
 function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) {
     const changeFecha = useStore( (state) => state.changeFecha);

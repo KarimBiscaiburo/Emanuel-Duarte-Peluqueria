@@ -2,7 +2,7 @@ import NavAdmin from "./nav-admin";
 import NavCliente from "./nav-cliente";
 import NavInicio from "./nav-inicio";
 
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 
 export default function Navegacion() {
     const isAuthenticated = useStore((state) => state.isAuthenticated);

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 
 import style from "../../styles/Tablas.module.css";
 import modal from "../../styles/Modal.module.css";

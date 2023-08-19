@@ -1,4 +1,4 @@
-import { pool } from "@/db/db";
+import { pool } from "src/db/db";
 
 const aceptarTurno = async (req, res) => {
     const idturnos = req.body;

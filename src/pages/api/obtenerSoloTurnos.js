@@ -1,4 +1,4 @@
-import { pool } from "@/db/db";
+import { pool } from "src/db/db";
 
 const obtenerSoloTurnos = async (req, res) => {
     try {

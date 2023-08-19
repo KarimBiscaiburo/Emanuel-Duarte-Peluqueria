@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import HorarioHijo from "../../components/HorarioHijo";
-import useStore from "@/store/store";
+import useStore from "src/store/store";
 
 import style from "../../styles/Fecha.module.css";
 import boton from "../../styles/Botones.module.css";
 import modal from "../../styles/Modal.module.css";
-import FechaHijo from "@/components/FechaHijo";
+import FechaHijo from "src/components/FechaHijo";
 
 export default function Fecha ({ data }) {
     const store = useStore( (state) => state);

@@ -38,17 +38,16 @@ export const authOptions = {
   callbacks: {
     async jwt({ account, token, user, profile, session }) {
         if(user) token.user = user;
-        //console.log(token);
         return token;
     },
     async session({ session, token }) {
-        //console.log(session, token)
+        session.user = token.user;
         return session;
     }
   },
-  /*pages: {{
+  pages: {
     signIn: "/iniciar-sesion"
-  }}*/
+  }
 }
 
 export default NextAuth(authOptions);

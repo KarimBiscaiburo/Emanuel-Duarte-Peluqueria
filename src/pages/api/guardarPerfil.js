@@ -1,4 +1,4 @@
-import { pool } from "@/db/db";
+import { pool } from "src/db/db";
 
 const guardarPerfil = async (req, res) => {
     const { nombre, apellido, email, celular, direccion, piso, id } = req.body;

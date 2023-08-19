@@ -9,13 +9,13 @@ import inputs from "../../../styles/Inputs.module.css";
 import boton from "../../../styles/Botones.module.css";
 import alerta from "../../../styles/Alertas.module.css";
 
-import { devolverErroresHtml, limpiarHtml, validarFormulario } from "@/funciones/validaciones";
+import { devolverErroresHtml, limpiarHtml, validarFormulario } from "src/funciones/validaciones";
 import { signIn } from "next-auth/react";
 
 export default function Registrarse () {
     const router = useRouter();
     const changeIsAuthenticated = useStore( (state) => state.changeIsAuthenticated);
-    const changeIsAdmin = useStore( (state) => state.changeIsAdmin);
+    const changeIdUsuario = useStore( (state) => state.changeIdUsuario);
 
     const [isVisible, setIsVisible] = useState(false);
     const isVisibleClass = isVisible ? `${style.mostrarPassword} ${style.passwordVisible}` : `${style.mostrarPassword}`;

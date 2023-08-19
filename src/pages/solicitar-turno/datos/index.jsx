@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
-import useStore from "@/store/store";
-import { solicitarUsuario } from "@/funciones/obtenerDatos";
+import useStore from "src/store/store";
+import { solicitarUsuario } from "src/funciones/obtenerDatos";
 import { useRouter } from "next/router";
 
 import input from "../../../styles/Inputs.module.css";

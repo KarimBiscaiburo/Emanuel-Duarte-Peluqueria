@@ -1,4 +1,4 @@
-import { pool } from "@/db/db";
+import { pool } from "src/db/db";
 
 function buscarReservasTurnos() {
     return new Promise ( (resolve, reject) => {

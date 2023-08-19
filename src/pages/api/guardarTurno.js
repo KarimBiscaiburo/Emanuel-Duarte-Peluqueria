@@ -1,4 +1,4 @@
-import { pool } from "@/db/db";
+import { pool } from "src/db/db";
 
 const guardarTurno = async (req, res) => {
     const {usuarios_idusuarios, fecha, hora, descripcion, nombre, apellido, celular, direccion, piso, servicio} = req.body

@@ -10,7 +10,7 @@ import input from "../../styles/Inputs.module.css";
 import boton from "../../styles/Botones.module.css";
 import alerta from "../../styles/Alertas.module.css";
 
-import { devolverErroresHtml, limpiarHtml, validarFormulario } from "@/funciones/validaciones";
+import { devolverErroresHtml, limpiarHtml, validarFormulario } from "src/funciones/validaciones";
 
 export default function IniciarSesion () {
     const router = useRouter();
@@ -50,18 +50,25 @@ export default function IniciarSesion () {
             mostrarResultadoError();
             return;
         }
-
-        //const autorizar = await signIn
         
-
         if(res === "admin") {
+            const resultadoSignIn = await signIn("credentials", {
+                email: data.email,
+                password: data.passwordText,
+                redirect: false
+            })
             changeIsAuthenticated();
             changeIsAdmin();
-            router.push("/");
+            if(resultadoSignIn?.ok) return router.push("/");
         } else {
+            const resultadoSignIn = await signIn("credentials", {
+                email: data.email,
+                password: data.passwordText,
+                redirect: false
+            })
             changeIdUsuario(res);
             changeIsAuthenticated();
-            router.push("/");
+            if(resultadoSignIn?.ok) return router.push("/");
         }
     }
 
