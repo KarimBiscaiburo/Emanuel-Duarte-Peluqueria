@@ -11,7 +11,7 @@ export default function NavInicio() {
     const handleActivo = () => setActivo(!activo);
     function redirigir() {
         setActivo(!activo);
-        router.push("/api/auth/signin");
+        router.push("/iniciar-sesion");
     }
     
     const claseHamburguesa = `${style.menuHamburguesa} ${activo ? style.activo : ""}`;

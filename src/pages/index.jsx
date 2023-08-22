@@ -1,36 +1,18 @@
 import { useRouter } from "next/router";
 import useStore from "src/store/store";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 
 import style from "../styles/Inicio.module.css";
 import boton from "../styles/Botones.module.css";
 
 export default function Home() { 
-  const { isAuthenticated } = useStore(); 
-  const changeIsAdmin = useStore( (state) => state.changeIsAdmin);
-  const changeIsAuthenticated = useStore( (state) => state.changeIsAuthenticated);
-  const changeIdUsuario = useStore( (state) => state.changeIdUsuario);
+  const { isAuthenticated } = useStore();
   const router = useRouter();
-  const { data } = useSession();
-  console.log(data)
-
-  // useEffect(() => {
-  //   if(data?.user === "admin") {
-  //     changeIsAdmin();
-  //     changeIsAuthenticated();
-  //   } else if (data?.user) {
-  //     changeIsAuthenticated();
-  //     changeIdUsuario(data.user);
-  //   }
-    
-  // }, [data, changeIsAdmin, changeIsAuthenticated, changeIdUsuario])
 
   function redirigir() {
     if(isAuthenticated){
       router.push("/solicitar-turno/servicio");
     } else {
-      router.push("/api/auth/signin");
+      router.push("/iniciar-sesion");
     }
   }
 

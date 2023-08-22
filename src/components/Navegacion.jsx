@@ -2,15 +2,21 @@ import NavAdmin from "./nav-admin";
 import NavCliente from "./nav-cliente";
 import NavInicio from "./nav-inicio";
 
-import useStore from "src/store/store";
+import { useSession } from "next-auth/react";
 
 export default function Navegacion() {
-    const isAuthenticated = useStore((state) => state.isAuthenticated);
-    const isAdmin = useStore((state) => state.isAdmin);
-
+    const { data: session } = useSession();
+    console.log(session)
     return (
         <> 
-            { isAuthenticated ? isAdmin ? <NavAdmin /> : <NavCliente /> : <NavInicio /> }
+            {
+                session?.user === "admin" ? <NavAdmin /> 
+                :
+                !isNaN(session?.user) ? <NavCliente /> 
+                :
+                <NavInicio />
+            }
+            {/* { isAuthenticated ? isAdmin ? <NavAdmin /> : <NavCliente /> : <NavInicio /> }  */}
         </>
     );
 }

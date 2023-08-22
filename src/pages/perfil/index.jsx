@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 import style from "../../styles/Perfil.module.css";
 import input from "../../styles/Inputs.module.css";
@@ -7,10 +8,9 @@ import alerta from "../../styles/Alertas.module.css";
 
 import { solicitarUsuario } from "src/funciones/obtenerDatos";
 import { devolverErroresHtml, limpiarHtml, validarFormulario } from "src/funciones/validaciones";
-import useStore from "src/store/store";
 
 export default function Perfil() {
-    const {idUsuario} = useStore();
+    const { data: session } = useSession();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -24,7 +24,7 @@ export default function Perfil() {
         const data = Object.fromEntries( new FormData(e.target) );
         data.nombre = data.nombre[0].toUpperCase() + data.nombre.substring(1);
         data.apellido = data.apellido[0].toUpperCase() + data.apellido.substring(1);
-        data.id = idUsuario;
+        data.id = session?.user;
 
         const res = await fetch("http://localhost:3000/api/guardarPerfil" , {
             method: "PUT",
@@ -96,7 +96,7 @@ export default function Perfil() {
 
         const btnEnviar = document.querySelector("#enviar");
 
-        solicitarUsuario(idUsuario)
+        solicitarUsuario(session?.user)
             .then(data => {
                 nombreInput.value = data[0].nombre;
                 apellidoInput.value = data[0].apellido;
