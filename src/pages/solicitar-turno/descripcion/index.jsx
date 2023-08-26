@@ -13,10 +13,9 @@ export default function Descripcion () {
 
     function guardarDescripcion() {
         const descripcion = document.querySelector("#descripcion").value;
-        changeDescripcion(descripcion)
+        const descripcionFormateada = descripcion.trim();
+        changeDescripcion(descripcionFormateada)
         router.push("/solicitar-turno/quien");
-
-        
     }
 
     return (
@@ -45,7 +44,7 @@ export default function Descripcion () {
 
                 <div className="contenedor alinear-costados">
                     <Link href="/solicitar-turno/servicio" className={boton.rojo}>Volver</Link>
-                    <button onClick={guardarDescripcion} href="/solicitar-turno/quien" className={boton.verde}>Siguiente</button>
+                    <button onClick={guardarDescripcion} className={boton.verde}>Siguiente</button>
                 </div>
             </main>
         </> 

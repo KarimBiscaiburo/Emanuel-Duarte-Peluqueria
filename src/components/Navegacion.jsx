@@ -1,12 +1,11 @@
-import NavAdmin from "./nav-admin";
-import NavCliente from "./nav-cliente";
-import NavInicio from "./nav-inicio";
+import NavAdmin from "./Nav-admin";
+import NavCliente from "./Nav-cliente";
+import NavInicio from "./Nav-inicio";
 
 import { useSession } from "next-auth/react";
 
 export default function Navegacion() {
     const { data: session } = useSession();
-    console.log(session)
     return (
         <> 
             {

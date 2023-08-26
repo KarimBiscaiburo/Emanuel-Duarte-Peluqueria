@@ -14,9 +14,6 @@ import { devolverErroresHtml, limpiarHtml, validarFormulario } from "src/funcion
 
 export default function IniciarSesion () {
     const router = useRouter();
-    const changeIsAuthenticated = useStore( (state) => state.changeIsAuthenticated);
-    const changeIsAdmin = useStore( (state) => state.changeIsAdmin);
-    const changeIdUsuario = useStore( (state) => state.changeIdUsuario);
 
     const [isVisible, setIsVisible] = useState(false);
     const isVisibleClass = isVisible ? `${style.mostrarPassword} ${style.passwordVisible}` : `${style.mostrarPassword}`;
@@ -57,8 +54,6 @@ export default function IniciarSesion () {
                 password: data.passwordText,
                 redirect: false
             })
-            changeIsAuthenticated();
-            changeIsAdmin();
             if(resultadoSignIn?.ok) return router.push("/");
         } else {
             const resultadoSignIn = await signIn("credentials", {
@@ -66,8 +61,6 @@ export default function IniciarSesion () {
                 password: data.passwordText,
                 redirect: false
             })
-            changeIdUsuario(res);
-            changeIsAuthenticated();
             if(resultadoSignIn?.ok) return router.push("/");
         }
     }

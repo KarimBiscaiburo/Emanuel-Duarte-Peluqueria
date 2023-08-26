@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useStore from "src/store/store";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 import style from "../../../styles/Quien.module.css";
 import input from "../../../styles/Inputs.module.css";
@@ -16,7 +17,7 @@ export default function Quien () {
     const [cambio, setCambio] = useState(false);
     const [detallesAlguienActivo, setDetallesAlguien] = useState(false);
 
-    const idUsuario = useStore( (state) => state.idUsuario);
+    const { data: session } = useSession();
     const changeNombre = useStore( (state) => state.changeNombre);
     const changeApellido = useStore( (state) => state.changeApellido);
 
@@ -33,7 +34,7 @@ export default function Quien () {
         }
 
         if(inputParaMi) {
-            solicitarUsuario(idUsuario)
+            solicitarUsuario(session?.user)
                 .then( data => {
                     changeNombre(data[0].nombre);
                     changeApellido(data[0].apellido);

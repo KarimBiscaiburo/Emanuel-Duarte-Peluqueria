@@ -3,10 +3,16 @@ import Link from "next/link";
 import style from "../styles/Nav.module.css";
 
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 export default function NavAdmin() {
     const [activo, setActivo] = useState(false);
     const handleActivo = () => setActivo(!activo);
+
+    function salirSesion() {
+        setActivo(!activo);
+        signOut();
+    }
     
     const claseHamburguesa = `${style.menuHamburguesa} ${activo ? style.activo : ""}`;
     const claseNav = `${style.nav} ${activo ? style.activo : ""}`;
@@ -31,6 +37,9 @@ export default function NavAdmin() {
                     </li>
                     <li className={style.navListaEnlaces}>
                         <Link className={style.enlace} href="/agenda" onClick={handleActivo}>Agenda</Link>
+                    </li>
+                    <li className={style.navListaEnlaces}>
+                        <button className={style.enlace} onClick={salirSesion}>Salir</button>
                     </li>
                 </ul>
             </nav>

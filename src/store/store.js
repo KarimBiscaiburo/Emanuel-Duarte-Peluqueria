@@ -1,10 +1,6 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
-    isAuthenticated: false,
-    isAdmin:  false,
-    idUsuario: null,
-
     servicio: null,
     descripcion: null,
     nombre: null,
@@ -14,10 +10,6 @@ const useStore = create((set) => ({
     celular: null,
     fecha: null,
     hora: null,
-
-    changeIsAuthenticated: () => set((state) => ({ isAuthenticated: !state.isAuthenticated })),
-    changeIsAdmin: () => set((state) => ({ isAdmin: !state.isAdmin })),
-    changeIdUsuario: (id) => set( { idUsuario: id } ),
 
     changeServicio: (servicio) => set( { servicio } ),
     changeDescripcion: (descripcion) => set( { descripcion } ),

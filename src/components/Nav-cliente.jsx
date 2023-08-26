@@ -2,11 +2,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import style from "../styles/Nav.module.css";
+import { signOut } from "next-auth/react";
 
 export default function NavCliente() {
     const [activo, setActivo] = useState(false);
     const handleActivo = () => setActivo(!activo);
-    
+
+    function salirSesion() {
+        setActivo(!activo);
+        signOut();
+    }
 
     const claseHamburguesa = `${style.menuHamburguesa} ${activo ? style.activo : ""}`;
     const claseNav = `${style.nav} ${activo ? style.activo : ""}`;
@@ -31,6 +36,9 @@ export default function NavCliente() {
                     </li>
                     <li className={style.navListaEnlaces}>
                         <Link className={style.enlace} href="/perfil" onClick={handleActivo}>Perfil</Link>
+                    </li>
+                    <li className={style.navListaEnlaces}>
+                        <button className={style.enlace} onClick={salirSesion}>Salir</button>
                     </li>
                 </ul>
             </nav>

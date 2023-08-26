@@ -96,17 +96,19 @@ export default function Perfil() {
 
         const btnEnviar = document.querySelector("#enviar");
 
-        solicitarUsuario(session?.user)
-            .then(data => {
-                nombreInput.value = data[0].nombre;
-                apellidoInput.value = data[0].apellido;
-                emailInput.value = data[0].email;
-                celularInput.value = data[0].celular;
-                direccionInput.value = data[0].direccion;
-                pisoInput.value = data[0].piso;
-            })
-
-        btnEnviar.classList.add("desactivado");
+        if(session?.user) {
+            solicitarUsuario(session?.user)
+                .then(data => {
+                    nombreInput.value = data[0].nombre;
+                    apellidoInput.value = data[0].apellido;
+                    emailInput.value = data[0].email;
+                    celularInput.value = data[0].celular;
+                    direccionInput.value = data[0].direccion;
+                    pisoInput.value = data[0].piso;
+                })
+    
+            btnEnviar.classList.add("desactivado");
+        }
     })  
 
     function activarBtn() {

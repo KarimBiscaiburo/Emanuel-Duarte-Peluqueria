@@ -1,21 +1,8 @@
-import { useRouter } from "next/router";
-import useStore from "src/store/store";
-
 import style from "../styles/Inicio.module.css";
 import boton from "../styles/Botones.module.css";
+import Link from "next/link";
 
 export default function Home() { 
-  const { isAuthenticated } = useStore();
-  const router = useRouter();
-
-  function redirigir() {
-    if(isAuthenticated){
-      router.push("/solicitar-turno/servicio");
-    } else {
-      router.push("/iniciar-sesion");
-    }
-  }
-
   return (
     <>
       <main>
@@ -28,7 +15,7 @@ export default function Home() {
         </div>
           
         <div className="contenedor alinear-medio">
-            <button onClick={redirigir} className={boton.verde}>Solicitar Turno</button>
+            <Link href={"/solicitar-turno/servicio"} className={boton.verde}>Solicitar Turno</Link>
         </div>
       </main>
     </>

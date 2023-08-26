@@ -3,16 +3,17 @@ import Link from "next/link";
 import useStore from "src/store/store";
 import { solicitarUsuario } from "src/funciones/obtenerDatos";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 import input from "../../../styles/Inputs.module.css";
 import boton from "../../../styles/Botones.module.css";
 import style from "../../../styles/Datos.module.css";
-import { useEffect } from "react";
 
 export default function Datos () {
     const router = useRouter();
 
-    const idUsuario = useStore( (state) => state.idUsuario);
+    const { data: session } = useSession();
     const direccion = useStore( (state) => state.direccion);
     const piso = useStore( (state) => state.piso);
     const celular = useStore( (state) => state.celular);
@@ -26,17 +27,19 @@ export default function Datos () {
         const inputPiso = document.querySelector("#piso");
         const inputCelular = document.querySelector("#celular");
 
-        if (direccion || celular || piso) {
-            inputDireccion.value = direccion;
-            inputPiso.value = piso;
-            inputCelular.value = celular;
-        } else {
-            solicitarUsuario(idUsuario)
-                .then(data => {
-                    inputDireccion.value = data[0].direccion
-                    inputPiso.value = data[0].piso
-                    inputCelular.value = data[0].celular
-                })
+        if(session?.user) {
+            if (direccion || celular || piso) {
+                inputDireccion.value = direccion;
+                inputPiso.value = piso;
+                inputCelular.value = celular;
+            } else {
+                solicitarUsuario(session?.user)
+                    .then(data => {
+                        inputDireccion.value = data[0].direccion
+                        inputPiso.value = data[0].piso
+                        inputCelular.value = data[0].celular
+                    })
+            }
         }
     })
 

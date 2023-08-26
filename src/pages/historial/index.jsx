@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import useStore from "src/store/store";
 import { useSession } from "next-auth/react";
 
 import style from "../../styles/Tablas.module.css";

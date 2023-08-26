@@ -79,7 +79,6 @@ export default function Fecha ({ data }) {
             return new Date(cadenaFecha);
         }
         setHoraTurnos(horas);
-        console.log(horas)
     }, [setHoraTurnos, consultaReservas, consultaTurnos, changeFecha]);
     
     const fechaActual = new Date();
