@@ -4,7 +4,6 @@ import style from "../styles/Fecha.module.css";
 
 export default function Layout({ isActive, onClick, hora, turnosSolicitados, reservar = false, setModalReservaActivo = null }) {
   const changeHora = useStore( (state) => state.changeHora);
-  const datoHora = useStore( (state) => state.hora);
   const datoFecha = useStore( (state) => state.fecha);
   const claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
 

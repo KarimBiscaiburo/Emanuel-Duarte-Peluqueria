@@ -1,9 +1,11 @@
+"use client"
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import HorarioHijo from "../../../components/HorarioHijo";
 import useStore from "src/store/store";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 import style from "../../../styles/Fecha.module.css";
 import boton from "../../../styles/Botones.module.css";
@@ -12,7 +14,6 @@ import FechaHijo from "src/components/FechaHijo";
 
 export default function Fecha ({ data }) {
     const router = useRouter();
-    const usuarios_idusuarios = useStore( (state) => state.idUsuario);
     const servicio = useStore( (state) => state.servicio);
     const descripcion = useStore( (state) => state.descripcion);
     const nombre = useStore( (state) => state.nombre);
@@ -23,12 +24,12 @@ export default function Fecha ({ data }) {
     const fecha = useStore( (state) => state.fecha);
     const hora = useStore( (state) => state.hora);
     const changeFecha = useStore( (state) => state.changeFecha);
+    const { data: session } = useSession();
 
     const [horaTurnos, setHoraTurnos] = useState([]);
     const [indexActivo, setIndexActivo] = useState(null);
     const [fechaActivo, setFechaActivo] = useState(0);
     const [modalActivo, setModalActivo] = useState(false);
-    const [isReservado, setIsReservado] = useState(false);
 
     const horario = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`;
@@ -128,7 +129,7 @@ export default function Fecha ({ data }) {
     async function enviarTurno() {
         const errores = []
         const datos = {
-            usuarios_idusuarios,
+            usuarios_idusuarios: session.user,
             fecha,
             hora,
             descripcion,
@@ -272,8 +273,6 @@ export default function Fecha ({ data }) {
                                         onClick={() => handleClick(index)}
                                         hora={hora}
                                         turnosSolicitados={horaTurnos}
-                                        isReservado={isReservado}
-                                        setIsReservado={setIsReservado}
                                     />
                                 })
                             }

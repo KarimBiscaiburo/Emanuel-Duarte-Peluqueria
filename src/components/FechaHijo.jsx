@@ -28,8 +28,6 @@ function FechaHijo ({index, texto, fechaActivo, setFechaActivo, setHoraTurnos}) 
         for(let i = 0; consultaReservas[i]; i++) {
             const fechaFormateada = convertirFecha(consultaReservas[i].fecha)
             const nuevaFecha = formatearFecha(fechaFormateada);
-            console.log(nuevaFecha)
-            console.log(fecha)
             if(nuevaFecha == fecha) {
                 const arregloHoras = consultaReservas[i].hora.split(":", 2)
                 const stringHora = `${arregloHoras[0]}:${arregloHoras[1]}`;

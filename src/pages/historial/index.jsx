@@ -10,8 +10,7 @@ export default function Historial() {
     const { data: session } = useSession();
     const [modalActivo, setModalActivo] = useState(false);
     const [historialTurnos, setHistorialTurnos] = useState([]);
-
-    
+    const [key, setKey] = useState(null);
 
     useEffect(() => {
         if(session?.user) {
@@ -30,12 +29,40 @@ export default function Historial() {
 
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`
 
-    function abrirModal() {
+    function abrirModal(id) {
+        setKey(id)
         setModalActivo(true);
     }
     function enviarModal(e) {
         e.preventDefault();
         setModalActivo(false);
+
+        //FALTA ENVIAR EL MAIL
+
+        //Eliminamos el registro
+        fetch("http://localhost:3000/api/eliminarTurno", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: key
+        })
+        .then( res => res.json() )
+        .then( data => {
+            if( data.affectedRows === 1) {
+                fetch("http://localhost:3000/api/obtenerTurnosUsuario", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" 
+                    },
+                    body: session?.user,
+                })
+                .then( res => res.json() )
+                .then( data => setHistorialTurnos(data) )
+            }
+        })
+
+        
     }
     function cerrarModal(e) {
         e.preventDefault();
@@ -82,7 +109,7 @@ export default function Historial() {
                                                 <td>{turno.piso}</td>
                                                 <td>
                                                     <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                                    <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
+                                                    <button onClick={ ()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
                                                 </td>
                                                 <td>
                                                     <p className={claseEstado}>{turno.estado}</p>
