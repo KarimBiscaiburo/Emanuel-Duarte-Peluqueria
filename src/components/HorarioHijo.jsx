@@ -2,7 +2,7 @@ import useStore from "src/store/store";
 
 import style from "../styles/Fecha.module.css";
 
-export default function Layout({ isActive, onClick, hora, turnosSolicitados, reservar = false, setModalReservaActivo = null }) {
+export default function Layout({ isActive, onClick, hora, turnosSolicitados, reservar = false, setModalReservaActivo = null, guardarHora = false, setModalGuardarHora = null }) {
   const changeHora = useStore( (state) => state.changeHora);
   const datoFecha = useStore( (state) => state.fecha);
   const claseHijo = isActive ? `${style.horario} ${style.horarioActivo}` : style.horario;
@@ -22,6 +22,10 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados, res
     if (reservar) {
       mostrarModalReserva(hora);
     }
+    
+    if (guardarHora) {
+      mostrarModalGuardarHora(hora)
+    }
   }
   function mostrarModalReserva(hora) {
     setModalReservaActivo(true);
@@ -33,6 +37,15 @@ export default function Layout({ isActive, onClick, hora, turnosSolicitados, res
     
     pFecha.textContent = fechaFormateada;
     pHora.textContent = `${hora} HRS`;
+  }
+  function mostrarModalGuardarHora(hora) {
+    setModalGuardarHora(true);
+    const pHora = document.querySelector("#parrafoModalGuardarHora");
+    pHora.textContent = `Turno guardado para las ${hora}`
+
+    setTimeout(() => {
+      setModalGuardarHora(false)
+    }, 850);
   }
   
   return (

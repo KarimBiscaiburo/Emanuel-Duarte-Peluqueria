@@ -30,9 +30,11 @@ export default function Fecha ({ data }) {
     const [indexActivo, setIndexActivo] = useState(null);
     const [fechaActivo, setFechaActivo] = useState(0);
     const [modalActivo, setModalActivo] = useState(false);
+    const [modalGuardarHora, setModalGuardarHora] = useState(false);
 
     const horario = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`;
+    const claseModalGuardarHora = modalGuardarHora ? `${modal.modalGuardarHora} ${modal.modalGuardarHoraActivo}` : `${modal.modalGuardarHora}`;
     const claseCalendario = fechaActivo === 20 ? `${style.textoFecha} ${style.fechaActivo}` : style.textoFecha
     
     const { consultaReservas, consultaTurnos } = data;
@@ -273,6 +275,8 @@ export default function Fecha ({ data }) {
                                         onClick={() => handleClick(index)}
                                         hora={hora}
                                         turnosSolicitados={horaTurnos}
+                                        guardarHora={true}
+                                        setModalGuardarHora={setModalGuardarHora}
                                     />
                                 })
                             }
@@ -296,6 +300,12 @@ export default function Fecha ({ data }) {
                     </div>  
                 </form>
             </section>
+
+            <div className={claseModalGuardarHora}>
+                <p id="parrafoModalGuardarHora"></p>
+            </div>
+
+            {/* UN MODAL LATERAL CHIQUITO PARA QUE CUANDO SELECCIONE UNA FECHA SE DESPLIEGUE (AL HORARIO HIJO LE PASA UN TRUE COMO ALGUN PROP PARA QUE EN HORARIOHIJO HAGA COMO EN AGENDA, ES DECIR, QUE CUANDO HAGA CLICK SE ACTIVE EL MODAL DE ESTA SECCION) */}
         </> 
     )
 }

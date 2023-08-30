@@ -39,6 +39,8 @@ export default function Historial() {
 
         //FALTA ENVIAR EL MAIL
 
+        //SI LA FECHA ES PASADA ENTONCES NO ENVIA MAIL
+
         //Eliminamos el registro
         fetch("http://localhost:3000/api/eliminarTurno", {
             method: "DELETE",
@@ -108,8 +110,8 @@ export default function Historial() {
                                                 <td>{turno.direccion}</td>
                                                 <td>{turno.piso}</td>
                                                 <td>
-                                                    <Link href="/reprogramar?url=historial" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                                    <button onClick={ ()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
+                                                    <Link href={`/reprogramar?id=${turno.idturnos}`} className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
+                                                    <button onClick={()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
                                                 </td>
                                                 <td>
                                                     <p className={claseEstado}>{turno.estado}</p>

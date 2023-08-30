@@ -48,4 +48,20 @@
     border: none;
     border-radius: 5px;
 }
+.modalGuardarHora {
+    position: fixed;
+    top: 60%;
+    right: -160px;
+    background-color: var(--verde);
+    color: var(--blanco);
+    max-width: 150px;
+    max-height: 120px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all .3s;
 
+}
+.modalGuardarHoraActivo {
+    right: 5px;
+}
