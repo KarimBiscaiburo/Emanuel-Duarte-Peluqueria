@@ -8,17 +8,36 @@ import boton from "../../styles/Botones.module.css";
 export default function Turnos({ data }) {
     const [modalActivo, setModalActivo] = useState(false);
     const [turnos, setTurnos] = useState([]);
+    const [idTurno, setIdTurno] = useState(null);
 
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`;
     useEffect(() => {
         setTurnos(data);
     }, [setTurnos, data])
 
-    function abrirModal() {
+    function abrirModal(id) {
+        setIdTurno(id)
         setModalActivo(true);
     }
     function enviarModal(e) {
         e.preventDefault();
+
+        fetch("http://localhost:3000/api/eliminarTurno", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: idTurno
+        })
+        .then( res => res.json() )
+        .then( data => {
+            if( data.affectedRows === 1) {
+                fetch("http://localhost:3000/api/obtenerSoloTurnos")
+                .then(res => res.json())
+                .then(data => setTurnos(data))
+            }
+        })
+
         setModalActivo(false);
     }
     function cerrarModal(e) {
@@ -57,7 +76,7 @@ export default function Turnos({ data }) {
                                     const hora = turno.hora.split(":");
                                     const horaFormateada = `${hora[0]}:${hora[1]}`;
 
-                                    const claseEstado = turno.estado.toUpperCase() === "Pendiente".toUpperCase() ? `${style.estado} ${style.pendiente}` : turno.estado.toUpperCase() === "Confirmado".toUpperCase() ? `${style.estado} ${style.confirmado}` : turno.estado.toUpperCase() === "Cancelado".toUpperCase() ? `${style.estado} ${style.cancelado}` : `${style.estado} ${style.finalizado}`;
+                                    const claseEstado = turno.estado.toUpperCase() === "Pendiente".toUpperCase() ? `${style.estado} ${style.pendiente}` : `${style.estado} ${style.confirmado}`;
 
                                     return <tr key={turno.idturnos}>
                                         <td>{`${turno.nombre} ${turno.apellido}`}</td>
@@ -69,7 +88,7 @@ export default function Turnos({ data }) {
                                         <td>{turno.descripcion}</td>
                                         <td>
                                             <Link href="/reprogramar?url=turnos" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
-                                            <button onClick={abrirModal} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
+                                            <button onClick={()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
                                         </td>
                                         <td>
                                             <p className={claseEstado}>{turno.estado}</p>

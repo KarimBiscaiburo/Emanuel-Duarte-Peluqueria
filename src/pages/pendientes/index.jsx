@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import style from "../../styles/Tablas.module.css";
 import modal from "../../styles/Modal.module.css";
 import boton from "../../styles/Botones.module.css";
+import enviarMail from "../api/enviarMail";
 
 export default function Pendientes({ data }) {
     const [modalActivo, setModalActivo] = useState(false);
     const [turnosPendiente, setTurnosPendientes] = useState([]);
+    const [idTurno, setIdTurno] = useState(null);
 
     const claseModal = modalActivo ? `${modal.modal} ${modal.modalActivo}` : `${modal.modal}`;
 
@@ -14,12 +16,34 @@ export default function Pendientes({ data }) {
         setTurnosPendientes(data);
     }, [setTurnosPendientes, data])
 
-    function abrirModal() {
+    function abrirModal(id) {
+        setIdTurno(id);
         setModalActivo(true);
     }
     function enviarModal(e) {
         e.preventDefault();
+        // ENVIAR MAIL DE CANCELACION
+
+        // fetch("http://localhost:3000/api/eliminarTurno", {
+        //     method: "DELETE",
+        //     headers: {
+        //         "Content-Type": "application/json" 
+        //     },
+        //     body: idTurno
+        // })
+        // .then( res => res.json() )
+        // .then( data => {
+        //     if( data.affectedRows === 1) {
+        //         fetch("http://localhost:3000/api/obtenerTurnosPendientes")
+        //         .then(res => res.json())
+        //         .then(data => setTurnosPendientes(data))
+        //     }
+        // })
         setModalActivo(false);
+        
+        fetch("http://localhost:3000/api/enviarMail")
+        .then( res => res.json() )
+        .then( data => console.log(data))
     }
     function cerrarModal(e) {
         e.preventDefault();
@@ -78,7 +102,7 @@ export default function Pendientes({ data }) {
                                         <td>{turno.piso}</td>
                                         <td>
                                             <button onClick={()=> cambiarEstado(turno.idturnos)} className={`${style.accionBtn} ${style.aceptar} ${style.accionSecPend}`}>Aceptar</button>
-                                            <button onClick={abrirModal} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
+                                            <button onClick={()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.rechazar} ${style.accionSecPend}`}>Rechazar</button>
                                         </td>
                                     </tr>
                                 })

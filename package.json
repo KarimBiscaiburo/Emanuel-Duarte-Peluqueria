@@ -15,6 +15,7 @@
     "mysql2": "^3.4.0",
     "next": "^13.2.4",
     "next-auth": "^4.22.5",
+    "nodemailer": "^6.9.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "zustand": "^4.3.7"
@@ -22,5 +23,14 @@
   "devDependencies": {
     "@types/node": "20.5.1",
     "@types/react": "18.2.20"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false,
+    "net": false,
+    "dns": false,
+    "child_process": false,
+    "tls": false
   }
 }
