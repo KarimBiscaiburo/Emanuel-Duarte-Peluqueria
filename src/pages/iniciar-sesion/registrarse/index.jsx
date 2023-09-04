@@ -56,8 +56,6 @@ export default function Registrarse () {
                 password: data.passwordText,
                 redirect: false
             })
-            changeIsAuthenticated();
-            changeIdUsuario(res);
             if(resultadoSignIn?.ok) return router.push("/");
         }
     }

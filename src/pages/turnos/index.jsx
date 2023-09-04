@@ -19,8 +19,41 @@ export default function Turnos({ data }) {
         setIdTurno(id)
         setModalActivo(true);
     }
-    function enviarModal(e) {
+    async function enviarModal(e) {
         e.preventDefault();
+        const btnCancelar = document.querySelector("#cancelarTurno");
+        btnCancelar.disabled = true;
+        btnCancelar.classList.add("desactivado");
+
+        const motivo = document.querySelector("#motivo").value;
+        const motivoFormateado = motivo.trim();
+
+        const loader = document.querySelector("#loader");
+        loader.classList.add("visible");
+
+        const resObtenerMail = await fetch("http://localhost:3000/api/obtenerEmailDeTurnos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: idTurno
+        });
+        const direccionMail = await resObtenerMail.json();
+
+        const data = {
+            motivo: motivoFormateado,
+            direccionMail: direccionMail[0],
+            asunto: "Turno cancelado"
+        }
+        // ENVIAR MAIL DE CANCELACION
+        const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(data)
+        })
+        const resEnviarMail = await consultaEnviarMail.json();
 
         fetch("http://localhost:3000/api/eliminarTurno", {
             method: "DELETE",
@@ -32,13 +65,16 @@ export default function Turnos({ data }) {
         .then( res => res.json() )
         .then( data => {
             if( data.affectedRows === 1) {
-                fetch("http://localhost:3000/api/obtenerSoloTurnos")
+                fetch("http://localhost:3000/api/obtenerTurnosPendientes")
                 .then(res => res.json())
                 .then(data => setTurnos(data))
             }
         })
 
         setModalActivo(false);
+        btnCancelar.disabled = false;
+        btnCancelar.classList.remove("desactivado");
+        loader.classList.remove("visible");
     }
     function cerrarModal(e) {
         e.preventDefault();
@@ -107,8 +143,11 @@ export default function Turnos({ data }) {
                     <textarea name="motivo" id="motivo"></textarea>
                     <div>
                         <button onClick={cerrarModal} className={boton.rojoModal}>Cerrar</button>
-                        <input onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
-                    </div>  
+                        <input id="cancelarTurno" onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
+                    </div>
+                    <svg id="loader" className="loader" viewBox="25 25 50 50">
+                        <circle r="20" cy="50" cx="50"></circle>
+                    </svg>
                 </form>
             </section>
         </>

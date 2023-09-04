@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import style from "../../styles/Tablas.module.css";
 import modal from "../../styles/Modal.module.css";
 import boton from "../../styles/Botones.module.css";
-import enviarMail from "../api/enviarMail";
 
 export default function Pendientes({ data }) {
     const [modalActivo, setModalActivo] = useState(false);
@@ -20,30 +19,62 @@ export default function Pendientes({ data }) {
         setIdTurno(id);
         setModalActivo(true);
     }
-    function enviarModal(e) {
+    async function enviarModal(e) {
         e.preventDefault();
-        // ENVIAR MAIL DE CANCELACION
+        const btnCancelar = document.querySelector("#cancelarTurno");
+        btnCancelar.disabled = true;
+        btnCancelar.classList.add("desactivado");
 
-        // fetch("http://localhost:3000/api/eliminarTurno", {
-        //     method: "DELETE",
-        //     headers: {
-        //         "Content-Type": "application/json" 
-        //     },
-        //     body: idTurno
-        // })
-        // .then( res => res.json() )
-        // .then( data => {
-        //     if( data.affectedRows === 1) {
-        //         fetch("http://localhost:3000/api/obtenerTurnosPendientes")
-        //         .then(res => res.json())
-        //         .then(data => setTurnosPendientes(data))
-        //     }
-        // })
-        setModalActivo(false);
-        
-        fetch("http://localhost:3000/api/enviarMail")
+        const motivo = document.querySelector("#motivo").value;
+        const motivoFormateado = motivo.trim();
+
+        const loader = document.querySelector("#loader");
+        loader.classList.add("visible");
+
+        const resObtenerMail = await fetch("http://localhost:3000/api/obtenerEmailDeTurnos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: idTurno
+        });
+        const direccionMail = await resObtenerMail.json();
+
+        const data = {
+            motivo: motivoFormateado,
+            direccionMail: direccionMail[0],
+            asunto: "Turno cancelado"
+        }
+        // ENVIAR MAIL DE CANCELACION
+        const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(data)
+        })
+        const resEnviarMail = await consultaEnviarMail.json();
+
+        fetch("http://localhost:3000/api/eliminarTurno", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: idTurno
+        })
         .then( res => res.json() )
-        .then( data => console.log(data))
+        .then( data => {
+            if( data.affectedRows === 1) {
+                fetch("http://localhost:3000/api/obtenerTurnosPendientes")
+                .then(res => res.json())
+                .then(data => setTurnosPendientes(data))
+            }
+        })
+
+        setModalActivo(false);
+        btnCancelar.disabled = false;
+        btnCancelar.classList.remove("desactivado");
+        loader.classList.remove("visible");
     }
     function cerrarModal(e) {
         e.preventDefault();
@@ -118,8 +149,11 @@ export default function Pendientes({ data }) {
                     <textarea name="motivo" id="motivo"></textarea>
                     <div>
                         <button onClick={cerrarModal} className={boton.rojoModal}>Cerrar</button>
-                        <input onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
-                    </div>  
+                        <input id="cancelarTurno" onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
+                    </div>
+                    <svg id="loader" className="loader" viewBox="25 25 50 50">
+                        <circle r="20" cy="50" cx="50"></circle>
+                    </svg>
                 </form>
             </section>
         </>

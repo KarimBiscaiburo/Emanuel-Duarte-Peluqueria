@@ -1,27 +1,28 @@
 import nodemailer from "nodemailer";
 
-const enviarMail = async () => {
+const enviarMail = async (req, res) => {
+    const { motivo, direccionMail, asunto } = req.body;
+
     const config = {
         host: "smtp.gmail.com",
         port: 587,
         auth: {
             user: "emanuelduarte.estilista@gmail.com",
             pass: process.env.GOOGLE_PASS
-            //kljuwgqiqqlxuljo
         }
     }
 
     const mensaje = {
         from: "emanuelduarte.estilista@gmail.com",
-        to: "emanuelduarte.estilista@gmail.com",
-        subjet: "Correo de prueba",
-        text: "Envio"
+        to: direccionMail.email,
+        subject: asunto,
+        text: motivo
     }
 
     const transport = nodemailer.createTransport(config);
     const info = await transport.sendMail(mensaje);
 
-    console.log(info)
+    res.json(info);
 }
 
 export default enviarMail;
