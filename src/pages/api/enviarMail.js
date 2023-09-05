@@ -22,7 +22,7 @@ const enviarMail = async (req, res) => {
     const transport = nodemailer.createTransport(config);
     const info = await transport.sendMail(mensaje);
 
-    res.json(info);
+    return res.json(info);
 }
 
 export default enviarMail;

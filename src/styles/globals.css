@@ -103,6 +103,11 @@ h4 {
     background-color: transparent;
     border: 1px solid var(--verde-claro);
 }
+#enviarTurno.desactivado {
+    cursor: not-allowed;
+    background-color: transparent;
+    border: 1px solid var(--verde-claro);
+}
 div button.reservado {
     background-color: var(--verde);
     border: 1px solid var(--verde);

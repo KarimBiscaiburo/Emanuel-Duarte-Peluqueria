@@ -22,7 +22,7 @@ const obtenerTurnos = async (req, res) => {
     try {
         buscarReservasTurnos()
             .then( resultados => {
-                res.json(resultados)
+                return res.json(resultados)
             })
 
     } catch (error) {

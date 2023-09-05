@@ -5,18 +5,20 @@ import { useEffect, useState } from "react";
 import HorarioHijo from "../../components/HorarioHijo";
 import useStore from "src/store/store";
 import { useRouter } from "next/router";
-
+import { useSession } from "next-auth/react";
 
 import style from "../../styles/Fecha.module.css";
 import boton from "../../styles/Botones.module.css";
 import modal from "../../styles/Modal.module.css";
 import FechaHijo from "src/components/FechaHijo";
 
-export default function Fecha ({ data }) {
+export default function Reprogramar ({ data }) {
     const changeFecha = useStore( (state) => state.changeFecha);
     const changeHora = useStore( (state) => state.changeHora);
     const hora = useStore( (state) => state.hora);
+    const fecha = useStore( (state) => state.fecha);
     const router = useRouter();
+    const { data: session } = useSession();
 
     const [horaTurnos, setHoraTurnos] = useState([]);
     const [indexActivo, setIndexActivo] = useState(null);
@@ -125,15 +127,46 @@ export default function Fecha ({ data }) {
         const valoresURL = window.location.search;
         const urlParams = new URLSearchParams(valoresURL);
         const id = urlParams.get("id");
+        const btnConfirmar = document.querySelector("#enviarTurno");
+        const loader = document.querySelector("#loader");
+        
         
         if(hora === null) {
             mostrarDatosFaltantes(["No se ha ingresado una hora"]);
             return;
         }
+
+        btnConfirmar.disabled = true;
+        btnConfirmar.classList.add("desactivado");
+        loader.classList.add("visible");
+
+        const consultaTurnoUnico = await fetch("http://localhost:3000/api/obtenerTurnoUnico", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: id
+        });
+        const resConsulta = await consultaTurnoUnico.json();
+
+        const resfecha = convertirFecha(resConsulta[0].fecha)
+        const year = resfecha.getUTCFullYear();
+        const month = String(resfecha.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(resfecha.getUTCDate()).padStart(2, '0');
+        const fechaFormateada = `${day}/${month}/${year}`;
+
+        const fechaNueva = convertirFecha(fecha);
+        const anio = fechaNueva.getUTCFullYear();
+        const mes = String(fechaNueva.getUTCMonth() + 1).padStart(2, '0');
+        const dia = String(fechaNueva.getUTCDate()).padStart(2, '0');
+        const nuevaFecha = `${dia}/${mes}/${anio}`;
+
+        const textoMail = `El turno de ${resConsulta[0].nombre} ${resConsulta[0].apellido} con fecha ${fechaFormateada} y hora ${resConsulta[0].hora} a sido reprogramado para el dia ${nuevaFecha} a las ${hora}`;
         
         const data = {
             id,
-            hora
+            hora,
+            fecha
         }
 
         const res = await fetch("http://localhost:3000/api/guardarReprogramar", {
@@ -142,11 +175,61 @@ export default function Fecha ({ data }) {
                 "Content-Type": "application/json" 
             },
             body: JSON.stringify(data)
-        })
-        
-        if(res.status === 200) {
-            router.push("/")
+        });
+        if (res.status === 200) {
+            if(session.user === "admin") {
+                //Enviar mail al cliente
+                const resObtenerMail = await fetch("http://localhost:3000/api/obtenerEmailDeTurnos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" 
+                    },
+                    body: id
+                });
+                const direccionMail = await resObtenerMail.json();
+    
+                const datosMensaje = {
+                    motivo: textoMail,
+                    direccionMail: direccionMail[0],
+                    asunto: "Turno reprogramado"
+                }
+    
+                const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify(datosMensaje)
+                })
+                const resEnviarMail = await consultaEnviarMail.json();
+                router.push("/")
+    
+            } else {
+                //Enviar mail a admin
+                const datosMensaje = {
+                    motivo: textoMail,
+                    direccionMail: {
+                        email: "emanuelduarte.estilista@gmail.com"
+                    },
+                    asunto: "Turno reprogramado"
+                }
+    
+                const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify(datosMensaje)
+                })
+                const resEnviarMail = await consultaEnviarMail.json();
+                router.push("/")
+            }
+    
+            btnConfirmar.disabled = false;
+            btnConfirmar.classList.remove("desactivado");
+            loader.classList.remove("visible");
         }
+
     }
     function mostrarDatosFaltantes(errores) {
         const btn = document.querySelector("#enviarTurno");
@@ -270,6 +353,9 @@ export default function Fecha ({ data }) {
                     <Link href="/solicitar-turno/datos" className={boton.rojo}>Volver</Link>
                     <button id="enviarTurno" onClick={reprogramarTurno} className={boton.verde}>Confirmar</button>
                 </div>
+                <svg id="loader" className="loader" viewBox="25 25 50 50">
+                    <circle r="20" cy="50" cx="50"></circle>
+                </svg>
             </main>
 
             <section className={claseModal}>

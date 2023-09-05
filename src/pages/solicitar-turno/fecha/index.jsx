@@ -153,8 +153,7 @@ export default function Fecha ({ data }) {
             mostrarDatosFaltantes(errores);
             return;
         }
-        //Se puede borrar el const?
-        const res = await fetch("http://localhost:3000/api/guardarTurno", {
+        fetch("http://localhost:3000/api/guardarTurno", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json" 

@@ -8,7 +8,7 @@ import boton from "../../styles/Botones.module.css";
 import modal from "../../styles/Modal.module.css";
 import FechaHijo from "src/components/FechaHijo";
 
-export default function Fecha ({ data }) {
+export default function Agenda ({ data }) {
     const store = useStore( (state) => state);
     const fecha = useStore( (state) => state.fecha);
     const hora = useStore( (state) => state.hora);

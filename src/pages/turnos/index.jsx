@@ -123,7 +123,7 @@ export default function Turnos({ data }) {
                                         <td>{turno.celular}</td>
                                         <td>{turno.descripcion}</td>
                                         <td>
-                                            <Link href="/reprogramar?url=turnos" className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
+                                            <Link href={`/reprogramar?id=${turno.idturnos}`} className={`${style.accion} ${style.reprogramar}`}>Reprogramar</Link>
                                             <button onClick={()=> abrirModal(turno.idturnos)} className={`${style.accionBtn} ${style.cancelar}`}>Cancelar</button>
                                         </td>
                                         <td>
