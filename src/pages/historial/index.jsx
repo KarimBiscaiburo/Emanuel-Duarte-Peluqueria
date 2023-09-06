@@ -33,42 +33,88 @@ export default function Historial() {
         setKey(id)
         setModalActivo(true);
     }
-    function enviarModal(e) {
+    async function enviarModal(e) {
         e.preventDefault();
-        setModalActivo(false);
+        const btnCancelar = document.querySelector("#cancelarTurno");
+        btnCancelar.disabled = true;
+        btnCancelar.classList.add("desactivado");
 
-        //FALTA ENVIAR EL MAIL
+        const motivo = document.querySelector("#motivo").value;
+        const motivoFormateado = motivo.trim();
 
-        //SI LA FECHA ES PASADA ENTONCES NO ENVIA MAIL
+        const loader = document.querySelector("#loader");
+        loader.classList.add("visible");
 
-        //Eliminamos el registro
-        fetch("http://localhost:3000/api/eliminarTurno", {
-            method: "DELETE",
+        const consultaTurnoUnico = await fetch("http://localhost:3000/api/obtenerTurnoUnico", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json" 
             },
             body: key
-        })
-        .then( res => res.json() )
-        .then( data => {
-            if( data.affectedRows === 1) {
-                fetch("http://localhost:3000/api/obtenerTurnosUsuario", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json" 
-                    },
-                    body: session?.user,
-                })
-                .then( res => res.json() )
-                .then( data => setHistorialTurnos(data) )
-            }
-        })
+        });
+        const resConsulta = await consultaTurnoUnico.json();
 
+        const resfecha = convertirFecha(resConsulta[0].fecha)
+        const year = resfecha.getUTCFullYear();
+        const month = String(resfecha.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(resfecha.getUTCDate()).padStart(2, '0');
+        const fechaFormateada = `${day}/${month}/${year}`;
+
+        const textoMail = `El turno de ${resConsulta[0].nombre} ${resConsulta[0].apellido} con fecha ${fechaFormateada} y hora ${resConsulta[0].hora} a sido cancelado debido a "${motivoFormateado}"`;
+
+        const datosMensaje = {
+            motivo: textoMail,
+            direccionMail: {
+                email: "emanuelduarte.estilista@gmail.com"
+            },
+            asunto: "Turno cancelado"
+        }
+
+        const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(datosMensaje)
+        })
+        const resEnviarMail = await consultaEnviarMail.json();
+        
+        if(resEnviarMail.accepted) {
+            fetch("http://localhost:3000/api/eliminarTurno", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json" 
+                },
+                body: key
+            })
+            .then( res => res.json() )
+            .then( data => {
+                if( data.affectedRows === 1) {
+                    fetch("http://localhost:3000/api/obtenerTurnosUsuario", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json" 
+                        },
+                        body: session?.user,
+                    })
+                    .then( res => res.json() )
+                    .then( data => setHistorialTurnos(data) )
+                }
+            })
+        }
+
+        setModalActivo(false);
+        btnCancelar.disabled = false;
+        btnCancelar.classList.remove("desactivado");
+        loader.classList.remove("visible");
         
     }
     function cerrarModal(e) {
         e.preventDefault();
         setModalActivo(false);
+    }
+    function convertirFecha(cadenaFecha) {
+        return new Date(cadenaFecha);
     }
 
     if( session?.user ) {
@@ -130,8 +176,11 @@ export default function Historial() {
                             <textarea name="motivo" id="motivo"></textarea>
                             <div>
                                 <button onClick={cerrarModal} className={boton.rojoModal}>Cerrar</button>
-                                <input onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
+                                <input id="cancelarTurno" onClick={enviarModal} className={boton.verdeModal} type="submit" placeholder="Enviar"/>
                             </div>  
+                            <svg id="loader" className="loader" viewBox="25 25 50 50">
+                                <circle r="20" cy="50" cx="50"></circle>
+                            </svg>
                         </form>
                     </section>
                 </div>

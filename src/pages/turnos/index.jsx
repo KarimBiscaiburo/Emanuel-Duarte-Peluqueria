@@ -55,21 +55,24 @@ export default function Turnos({ data }) {
         })
         const resEnviarMail = await consultaEnviarMail.json();
 
-        fetch("http://localhost:3000/api/eliminarTurno", {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json" 
-            },
-            body: idTurno
-        })
-        .then( res => res.json() )
-        .then( data => {
-            if( data.affectedRows === 1) {
-                fetch("http://localhost:3000/api/obtenerTurnosPendientes")
-                .then(res => res.json())
-                .then(data => setTurnos(data))
-            }
-        })
+        if(resEnviarMail.accepted) {
+            fetch("http://localhost:3000/api/eliminarTurno", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json" 
+                },
+                body: idTurno
+            })
+            .then( res => res.json() )
+            .then( data => {
+                if( data.affectedRows === 1) {
+                    fetch("http://localhost:3000/api/obtenerSoloTurnos")
+                    .then(res => res.json())
+                    .then(data => setTurnos(data))
+                }
+            })
+        }
+
 
         setModalActivo(false);
         btnCancelar.disabled = false;

@@ -55,21 +55,23 @@ export default function Pendientes({ data }) {
         })
         const resEnviarMail = await consultaEnviarMail.json();
 
-        fetch("http://localhost:3000/api/eliminarTurno", {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json" 
-            },
-            body: idTurno
-        })
-        .then( res => res.json() )
-        .then( data => {
-            if( data.affectedRows === 1) {
-                fetch("http://localhost:3000/api/obtenerTurnosPendientes")
-                .then(res => res.json())
-                .then(data => setTurnosPendientes(data))
-            }
-        })
+        if(resEnviarMail.accepted) {
+            fetch("http://localhost:3000/api/eliminarTurno", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json" 
+                },
+                body: idTurno
+            })
+            .then( res => res.json() )
+            .then( data => {
+                if( data.affectedRows === 1) {
+                    fetch("http://localhost:3000/api/obtenerTurnosPendientes")
+                    .then(res => res.json())
+                    .then(data => setTurnosPendientes(data))
+                }
+            })
+        }
 
         setModalActivo(false);
         btnCancelar.disabled = false;
@@ -95,6 +97,31 @@ export default function Pendientes({ data }) {
                 .then(res => res.json())
                 .then(data => setTurnosPendientes(data))
         }
+        
+        const resObtenerMail = await fetch("http://localhost:3000/api/obtenerEmailDeTurnos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: id
+        });
+        const direccionMail = await resObtenerMail.json();
+
+        const data = {
+            motivo: "Tu turno ha sido aceptado",
+            direccionMail: direccionMail[0],
+            asunto: "Turno aceptado"
+        }
+
+        const consultaEnviarMail = await fetch("http://localhost:3000/api/enviarMail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(data)
+        })
+        const resEnviarMail = await consultaEnviarMail.json();
+
     }
 
     return (
