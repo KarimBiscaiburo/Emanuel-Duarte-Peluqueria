@@ -33,9 +33,9 @@ const iniciarSesion = (req, res) => {
                     comprobarPassword(resultados.consultaUsuario[0][0].password, passwordText)
                         .then( isValid => {
                             if (isValid) {
-                                res.status(200).json(resultados.consultaUsuario[0][0].idusuarios);
+                                return res.status(200).json(resultados.consultaUsuario[0][0].idusuarios);
                             } else {
-                                res.status(200).json(isValid);
+                                return res.status(200).json(isValid);
                             }
                         })
                     
@@ -43,14 +43,14 @@ const iniciarSesion = (req, res) => {
                     comprobarPassword(resultados.consultaAdmin[0][0].password, passwordText)
                         .then( isValid => {
                             if (isValid) {
-                                res.status(200).json("admin");
+                                return res.status(200).json("admin");
                             } else {
-                                res.status(200).json(isValid);
+                                return res.status(200).json(isValid);
                             }
                         })
                 }
             } else {
-                res.status(200).json("El correo no existe");
+                return res.status(200).json("El correo no existe");
             }
         })
         .catch(error => {
